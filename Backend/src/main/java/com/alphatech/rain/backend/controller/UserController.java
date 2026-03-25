@@ -15,14 +15,14 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/v1/user")
+@RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
     /**
-     * PATCH /v1/user/role
+     * PATCH /api/v1/user/role
      * Assign a role to the authenticated user.
      */
     @PatchMapping("/role")
@@ -34,7 +34,7 @@ public class UserController {
     }
 
     /**
-     * PATCH /v1/user/profile
+     * PATCH /api/v1/user/profile
      * Update basic profile information (multipart/form-data).
      */
     @PatchMapping(value = "/profile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -46,7 +46,7 @@ public class UserController {
     }
 
     /**
-     * POST /v1/user/verify-identity
+     * POST /api/v1/user/verify-identity
      * Upload identity documents for verification.
      */
     @PostMapping(value = "/verify-identity", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
