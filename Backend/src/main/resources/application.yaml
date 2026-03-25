@@ -8,9 +8,9 @@ spring:
     lazy-initialization: true
 #datasoruce settings
   datasource:
-    url: jdbc:postgresql://localhost:5432/CarryGo
-    username: postgres
-    password: postgres
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
     hikari:
       pool-name: VP-LOCAL-CONN-POOL
 #servlet Multipart Settings
@@ -53,19 +53,24 @@ server:
     context-path: /api/v1
 
 app:
-  jwt-secret: 9a4f2c8d3b7a1e6f45c8a0b3f267d8b1d4e6f3c8a9d2b5f8e3a9c8b5f6v8a3d9
+  jwt-secret: ${JWT_SECRET}
   jwt-expiration-ms: 86400000
   otp:
     expiry-minutes: 30
     length: 5
   upload:
     diruploads: C:\Users\SHADOW\Pictures\Camera Roll
-#if you need to save anything in cloud
 
+
+#if you need to save anything in cloud
 aws:
   s3:
     bucketName: user_documents
     region: af-south-1
     folder: document-images
-    accessKey: AKIATXI5FIOJPC46SQUT
-    accessSecret: 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
+    accessKey: ${AWS_ACCESS_KEY}
+    accessSecret: ${AWS_ACCESS_SECRET}
+
+#QuickTeller
+QUICKTELLER_CLIENTID: ${QUICKTELLER_CLIENTID}
+QUICKTELLER_SECRET: ${QUICKTELLER_SECRET}

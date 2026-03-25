@@ -58,6 +58,10 @@ public class AuthServiceImpl implements AuthService {
         // In production, integrate an SMS provider (e.g. Twilio, Termii) here.
         log.info("OTP for {} → {} (expires in {} min)", request.getPhone(), code, otpExpiryMinutes);
 
+        //send OTP Using QuickTeller API
+
+        // End of SendOTP Using QuickTeller API
+
         return GenericResponseDTO.builder().message("OTP sent successfully").build();
     }
 
