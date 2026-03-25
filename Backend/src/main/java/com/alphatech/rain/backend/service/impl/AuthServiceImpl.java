@@ -1,10 +1,12 @@
 package com.alphatech.rain.backend.service.impl;
 
 import com.alphatech.rain.backend.dto.request.PhoneRequestDTO;
+import com.alphatech.rain.backend.dto.request.SendOtpRequestDTO;
 import com.alphatech.rain.backend.dto.request.VerifyOtpRequestDTO;
 import com.alphatech.rain.backend.dto.response.AuthResponseDTO;
 import com.alphatech.rain.backend.dto.response.GenericResponseDTO;
 import com.alphatech.rain.backend.exception.InvalidOtpException;
+import com.alphatech.rain.backend.service.QuickTellerOTPSendService;
 import com.alphatech.rain.backend.utils.UserMapper;
 import com.alphatech.rain.backend.models.Otp;
 import com.alphatech.rain.backend.models.User;
@@ -32,6 +34,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
     private final UserMapper userMapper;
+    private final QuickTellerOTPSendService otpService;
 
     @Value("${app.otp.expiry-minutes:5}")
     private int otpExpiryMinutes;
@@ -59,7 +62,16 @@ public class AuthServiceImpl implements AuthService {
         log.info("OTP for {} → {} (expires in {} min)", request.getPhone(), code, otpExpiryMinutes);
 
         //send OTP Using QuickTeller API
-
+        otpService.sendOtp(
+                SendOtpRequestDTO.builder()
+                        .phoneNumber(request.getPhone())
+                        .channel("phone")
+                        .action(otp.getCode())
+                        .service("Verification")
+                        .channel("phone")
+                        .build()
+        );
+        log.info("OTP for {} → {} (sent through QuickTeller)", request.getPhone(), code);
         // End of SendOTP Using QuickTeller API
 
         return GenericResponseDTO.builder().message("OTP sent successfully").build();
