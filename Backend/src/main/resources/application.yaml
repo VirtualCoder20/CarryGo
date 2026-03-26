@@ -49,7 +49,7 @@ spring:
 #        debug: true
 
 server:
-  port: 4545
+  port: ${SERVER_PORT}
   servlet:
     context-path: /api/v1
 
