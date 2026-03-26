@@ -9,11 +9,13 @@ import { ThemedText } from '@/components/themed-text';
 import { Brand, Fonts } from '@/constants/theme';
 import { useState } from 'react';
 import { IconSymbol } from '@/components/ui/icon-symbol';
+import { useRouter } from 'expo-router';
 
 import { useStorage } from '@/hooks/use-storage';
 
 export default function OnboardingScreen() {
   const { width } = useWindowDimensions();
+  const router = useRouter();
   const [step, setStep] = useState(0);
   const [, setHasSeenOnboarding] = useStorage('onboarding_seen', false);
 
@@ -25,6 +27,7 @@ export default function OnboardingScreen() {
       setStep(step + 1);
     } else {
       setHasSeenOnboarding(true);
+      router.replace('/(auth)');
     }
   };
 

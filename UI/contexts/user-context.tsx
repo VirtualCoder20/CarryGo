@@ -1,6 +1,7 @@
 import { createContext, use, useState, useEffect, ReactNode } from 'react';
 import { User, api } from '@/utils/api';
 import { secureStorage } from '@/utils/secure-storage';
+import { useStorage } from '@/hooks/use-storage';
 
 interface UserContextType {
   user: User | null;
@@ -19,6 +20,7 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [authError, setAuthError] = useState<string | null>(null);
+  const [ , setHasSeenOnboarding] = useStorage('onboarding_seen', false);
 
   useEffect(() => {
     async function loadStoredAuth() {
@@ -52,12 +54,12 @@ export function UserProvider({ children }: { children: ReactNode }) {
     await secureStorage.removeToken();
     setToken(null);
     setUser(null);
+    //TODO: remove the hasSeenOnboarding flag if you want to show onboarding again on next login
+    setHasSeenOnboarding(false);
   };
 
   const updateUser = (updates: Partial<User>) => {
-    if (user) {
-      setUser({ ...user, ...updates });
-    }
+    setUser(prev => prev ? { ...prev, ...updates } : (updates as User));
   };
 
   return (

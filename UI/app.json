@@ -18,7 +18,8 @@
         "monochromeImage": "./assets/images/icon.png",
         "backgroundImage": "./assets/images/icon.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.tripletech.carrygo"
     },
     "web": {
       "output": "static",
@@ -47,6 +48,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "8b1df655-0cb9-450a-a8db-18c2c041d28a"
+      }
     }
   }
 }

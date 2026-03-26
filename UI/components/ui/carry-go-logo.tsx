@@ -31,10 +31,12 @@ const styles = StyleSheet.create({
     fontSize: 42,
     fontWeight: 'bold',
     color: '#FFF',
+    lineHeight: 42,
   },
   greenText: {
     fontSize: 42,
     fontWeight: 'bold',
     color: Brand.primary,
+    lineHeight: 42,
   },
 });

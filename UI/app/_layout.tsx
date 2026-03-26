@@ -25,23 +25,23 @@ const queryClient = new QueryClient({
 
 SplashScreen.preventAutoHideAsync();
 
-function RootNavigator() {
-  const colorScheme = useColorScheme();
+function RootNavigatorContent() {
   const [hasSeenOnboarding] = useStorage("onboarding_seen", false);
   const router = useRouter();
   const segments = useSegments();
   const { user, isLoading } = useUser();
   const [isMounted, setIsMounted] = useState(false);
+  const [isNavigationReady, setIsNavigationReady] = useState(false);
 
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
   useEffect(() => {
-    if (!isLoading && isMounted) {
+    if (!isLoading && isMounted && hasSeenOnboarding !== null) {
       SplashScreen.hideAsync();
     }
-  }, [isLoading, isMounted]);
+  }, [isLoading, isMounted, hasSeenOnboarding]);
 
   useEffect(() => {
     if (!isMounted || isLoading) return;
@@ -53,6 +53,7 @@ function RootNavigator() {
       if (segment !== "onboarding") {
         router.replace("/onboarding");
       }
+      setIsNavigationReady(true);
       return;
     }
 
@@ -60,40 +61,55 @@ function RootNavigator() {
       if (segment !== "(auth)") {
         router.replace("/(auth)");
       }
+      setIsNavigationReady(true);
       return;
     }
 
     // User is authenticated, check onboarding status
     const status = user.onboardingStatus;
-    
-    if (status === 'AUTH' || status === 'ROLE_SELECTION') {
+
+    if (status === "AUTH" || status === "ROLE_SELECTION") {
       if (segment !== "onboarding") {
         router.replace("/onboarding/role");
       }
-    } else if (status === 'PROFILE_INFO') {
-      if (segments.join('/') !== "onboarding/profile") {
+    } else if (status === "PROFILE_INFO") {
+      if (segments.join("/") !== "onboarding/profile") {
         router.replace("/onboarding/profile");
       }
-    } else if (status === 'IDENTITY_VERIFICATION') {
-      if (segments.join('/') !== "onboarding/verify") {
+    } else if (status === "IDENTITY_VERIFICATION") {
+      if (segments.join("/") !== "onboarding/verify") {
         router.replace("/onboarding/verify");
       }
-    } else if (status === 'COMPLETE') {
-      if (segment !== "(main)") {
+    } else if (status === "COMPLETE") {
+      const allowedRoots = ["(main)", "search-results", "ride-history", "booking-confirmation", "driver-profile", "driver-trip-history", "create-ride"];
+      if (!allowedRoots.includes(segment)) {
         router.replace("/(main)");
       }
     }
+    setIsNavigationReady(true);
   }, [hasSeenOnboarding, user, isMounted, segments, router, isLoading]);
 
-  if (!isMounted || isLoading) return null;
+  // Don't render anything until we're fully mounted and loading is done
+  if (!isMounted || isLoading || !isNavigationReady) return null;
+
+  return (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="onboarding" />
+      <Stack.Screen name="(auth)" />
+      <Stack.Screen name="(main)" />
+      <Stack.Screen name="search-results" />
+      <Stack.Screen name="ride-history" />
+      <Stack.Screen name="driver-profile" />
+    </Stack>
+  );
+}
+
+function RootNavigator() {
+  const colorScheme = useColorScheme();
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="onboarding" />
-        <Stack.Screen name="(auth)" />
-        <Stack.Screen name="(main)" />
-      </Stack>
+      <RootNavigatorContent />
       <StatusBar style="auto" />
     </ThemeProvider>
   );
@@ -104,6 +120,7 @@ export default function RootLayout() {
     <QueryClientProvider client={queryClient}>
       <UserProvider>
         <RootNavigator />
+        <StatusBar style="light" />
       </UserProvider>
     </QueryClientProvider>
   );

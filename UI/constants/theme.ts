@@ -10,7 +10,9 @@ const tintColorDark = '#fff';
 
 export const Brand = {
   primary: '#27D69B',
-  navy: '#001C30',
+  navy: '#0A182E',
+  light_navy: '#1E293B',
+  gray: '#888888',
 };
 
 export const Colors = {

@@ -25,7 +25,24 @@ export default function PhoneAuthScreen() {
     mutationFn: (data: { phone: string; otp: string }) => api.auth.verifyOtp(data.phone, data.otp),
     onSuccess: async (data) => {
       await login(data.token, data.user);
-      router.push('/onboarding/role');
+      
+      // Redirect based on onboarding status
+      switch (data.user.onboardingStatus) {
+        case 'ROLE_SELECTION':
+          router.push('/onboarding/role');
+          break;
+        case 'PROFILE_INFO':
+          router.push('/onboarding/profile');
+          break;
+        case 'IDENTITY_VERIFICATION':
+          router.push('/onboarding/verify');
+          break;
+        case 'COMPLETE':
+          router.push('/(main)');
+          break;
+        default:
+          router.push('/onboarding/role');
+      }
     },
   });
 
@@ -34,7 +51,7 @@ export default function PhoneAuthScreen() {
       if (!phoneNumber || phoneNumber.length < 5) return false;
       const number = parsePhoneNumberWithError(phoneNumber, 'NG');
       return number.isValid();
-    } catch (e) {
+    } catch {
       return false;
     }
   };

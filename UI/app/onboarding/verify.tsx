@@ -55,13 +55,26 @@ export default function VerifyIdentityScreen() {
     });
   };
 
+
   const handleComplete = () => {
-     verifyIdentityMutation.mutate({ vehicleDescription, documents });
+    // Convert documents from assets to URIs
+    const documentUris: Record<string, string> = {};
+    Object.entries(documents).forEach(([key, asset]) => {
+      documentUris[key] = asset.uri;
+    });
+    
+    verifyIdentityMutation.mutate({ 
+      vehicleDescription, 
+      documents: documentUris 
+    });
   };
 
   const isDriver = user?.role === 'driver';
+
   const totalSteps = isDriver ? 4 : 3;
   const currentStep = isDriver ? 4 : 3;
+
+
 
   const requiredDocs = isDriver 
     ? ['driversLicense', 'vehicleRegistration', 'nationalId', 'insurance']
@@ -192,6 +205,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: Brand.navy,
+    paddingTop: 42,
   },
   header: {
     flexDirection: 'row',
