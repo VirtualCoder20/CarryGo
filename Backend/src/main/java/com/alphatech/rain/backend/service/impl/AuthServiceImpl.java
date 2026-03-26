@@ -7,7 +7,6 @@ import com.alphatech.rain.backend.dto.response.AuthResponseDTO;
 import com.alphatech.rain.backend.dto.response.GenericResponseDTO;
 import com.alphatech.rain.backend.exception.InvalidOtpException;
 import com.alphatech.rain.backend.service.QuickTellerOTPSendService;
-import com.alphatech.rain.backend.utils.UserMapper;
 import com.alphatech.rain.backend.models.Otp;
 import com.alphatech.rain.backend.models.User;
 import com.alphatech.rain.backend.models.enums.OnboardingStatus;
@@ -16,12 +15,12 @@ import com.alphatech.rain.backend.repository.UserRepository;
 import com.alphatech.rain.backend.security.JwtUtil;
 import com.alphatech.rain.backend.service.AuthService;
 
+import com.alphatech.rain.backend.utils.UserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 
@@ -65,6 +64,7 @@ public class AuthServiceImpl implements AuthService {
         otpService.sendOtp(
                 SendOtpRequestDTO.builder()
                         .phoneNumber(request.getPhone())
+                        .code("919456")
                         .channel("phone")
                         .action(otp.getCode())
                         .service("Verification")
@@ -104,7 +104,7 @@ public class AuthServiceImpl implements AuthService {
 
         return AuthResponseDTO.builder()
                 .token(token)
-                .user(userMapper.toUserResponseDTO(user))
+                .user(userMapper.toDTO(user))
                 .build();
     }
 

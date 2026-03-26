@@ -66,5 +66,6 @@ public class User {
         if (this.onboardingStatus == null) {
             this.onboardingStatus = OnboardingStatus.ROLE_SELECTION;
         }
+
     }
 }

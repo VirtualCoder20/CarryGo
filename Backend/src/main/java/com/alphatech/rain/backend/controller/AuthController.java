@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/v1/auth")
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
     private final AuthService authService;
 
     /**
-     * POST /v1/auth/phone
+     * POST /api/v1/auth/phone
      * Initiate phone verification by sending an OTP.
      */
     @PostMapping("/phone")
@@ -30,7 +30,7 @@ public class AuthController {
     }
 
     /**
-     * POST /v1/auth/verify
+     * POST /api/v1/auth/verify
      * Verify OTP and complete login/signup.
      */
     @PostMapping("/verify")

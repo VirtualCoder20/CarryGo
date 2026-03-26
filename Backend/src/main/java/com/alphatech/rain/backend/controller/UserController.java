@@ -5,6 +5,7 @@ import com.alphatech.rain.backend.dto.request.ProfileUpdateRequestDTO;
 import com.alphatech.rain.backend.dto.request.RoleUpdateRequestDTO;
 import com.alphatech.rain.backend.dto.response.OnboardingStatusResponseDTO;
 import com.alphatech.rain.backend.models.User;
+import com.alphatech.rain.backend.security.CustomUserPrincipal;
 import com.alphatech.rain.backend.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,10 +28,11 @@ public class UserController {
      */
     @PatchMapping("/role")
     public ResponseEntity<OnboardingStatusResponseDTO> updateRole(
-            @AuthenticationPrincipal User currentUser,
+            @AuthenticationPrincipal CustomUserPrincipal currentUser,
             @Valid @RequestBody RoleUpdateRequestDTO request) {
 
-        return ResponseEntity.ok(userService.updateRole(currentUser, request));
+        currentUser.getUsername();
+        return ResponseEntity.ok(userService.updateRole(currentUser.getUser(), request));
     }
 
     /**
@@ -39,10 +41,10 @@ public class UserController {
      */
     @PatchMapping(value = "/profile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<OnboardingStatusResponseDTO> updateProfile(
-            @AuthenticationPrincipal User currentUser,
+            @AuthenticationPrincipal CustomUserPrincipal currentUser,
             @Valid @ModelAttribute ProfileUpdateRequestDTO request) {
 
-        return ResponseEntity.ok(userService.updateProfile(currentUser, request));
+        return ResponseEntity.ok(userService.updateProfile(currentUser.getUser(), request));
     }
 
     /**
@@ -51,10 +53,10 @@ public class UserController {
      */
     @PostMapping(value = "/verify-identity", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<OnboardingStatusResponseDTO> verifyIdentity(
-            @AuthenticationPrincipal User currentUser,
+            @AuthenticationPrincipal CustomUserPrincipal currentUser,
             @ModelAttribute IdentityVerificationRequestDTO request) {
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(userService.verifyIdentity(currentUser, request));
+                .body(userService.verifyIdentity(currentUser.getUser(), request));
     }
 }

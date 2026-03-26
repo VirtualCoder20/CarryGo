@@ -78,25 +78,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(status).body(response);
     }
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<SendOtpResponseDTO> handleValidationExceptions(
-            MethodArgumentNotValidException ex) {
-
-        List<List<String>> errors = ex.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .map(error -> List.of(error.getField() + ": " + error.getDefaultMessage()))
-                .collect(Collectors.toList());
-
-        SendOtpResponseDTO errorResponse = new SendOtpResponseDTO();
-        errorResponse.setSuccess(false);
-        errorResponse.setResponseCode("VALIDATION_ERROR");
-        errorResponse.setErrors(errors);
-        errorResponse.setLogId(UUID.randomUUID().toString());
-        errorResponse.setMessage("Validation failed");
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
-    }
 
     @ExceptionHandler(OtpServiceException.class)
     public ResponseEntity<SendOtpResponseDTO> handleOtpServiceException(OtpServiceException ex) {
@@ -109,18 +90,5 @@ public class GlobalExceptionHandler {
         errorResponse.setLogId(UUID.randomUUID().toString());
 
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(errorResponse);
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<SendOtpResponseDTO> handleGenericException(Exception ex) {
-        log.error("Unexpected error", ex);
-
-        SendOtpResponseDTO errorResponse = new SendOtpResponseDTO();
-        errorResponse.setSuccess(false);
-        errorResponse.setResponseCode("INTERNAL_ERROR");
-        errorResponse.setMessage("An unexpected error occurred");
-        errorResponse.setLogId(UUID.randomUUID().toString());
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
 }

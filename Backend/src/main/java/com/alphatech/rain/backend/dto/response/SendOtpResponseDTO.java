@@ -1,6 +1,7 @@
 package com.alphatech.rain.backend.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
@@ -21,7 +22,8 @@ public class SendOtpResponseDTO {
     private String message;
 
     @JsonProperty("data")
-    private List<OtpDataDTO> data;
+    @JsonUnwrapped
+    private OtpDataDTO data;
 
     // For error response
     @JsonProperty("responseCode")
