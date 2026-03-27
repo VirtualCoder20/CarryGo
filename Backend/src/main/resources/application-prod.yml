@@ -1,0 +1,80 @@
+
+spring:
+  application:
+    name: Backend
+  Jackson:
+    serialization:
+      fail-on-empty-beans: false
+  main:
+    lazy-initialization: true
+  #datasoruce settings
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
+    hikari:
+      pool-name: VP-LOCAL-CONN-POOL
+  #servlet Multipart Settings
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 5MB
+
+  #jpa settings
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+#mail Sender Settings
+#  mail:
+#    sender: valueplus-local
+#    host: smtppro.zoho.com
+#    port: 587
+#    username: partner@valueplusagency.com
+#    password: "ValueDEV1@"
+#    properties:
+#      mail:
+#        transport:
+#          protocol: smtp
+#        smtp:
+#          auth: true
+#          ehlo:
+#            name: smtp-relay.brevo.com
+#          starttls:
+#            enable: true
+#        debug: true
+
+server:
+  port: ${SERVER_PORT}
+  servlet:
+    context-path: /api/v1
+
+app:
+  jwt-secret: ${JWT_SECRET}
+  jwt-expiration-ms: 86400000
+  otp:
+    expiry-minutes: 30
+    length: 5
+  upload:
+    diruploads: C:\Users\SHADOW\Pictures\Camera Roll
+
+
+#if you need to save anything in cloud
+aws:
+  s3:
+    bucketName: user_documents
+    region: af-south-1
+    folder: document-images
+    accessKey: ${AWS_ACCESS_KEY}
+    accessSecret: ${AWS_ACCESS_SECRET}
+
+#QuickTeller
+QUICKTELLER:
+  CLIENTID: ${QUICKTELLER_CLIENTID}
+  SECRET: ${QUICKTELLER_SECRET}
+  TokenUrl: ${QUICKTELLER_TOKEN_URL}
+  Whatsapp_token_send_url: ${QUICKTELLER_WHATSAPP_TOKEN_URL}

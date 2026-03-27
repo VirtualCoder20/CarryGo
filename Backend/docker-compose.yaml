@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  app:
+    image: fireboy30/carrygo:latest
+    ports:
+      - "4545:4545"
+    environment:
+      SERVER_PORT: ${SERVER_PORT}
+      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_USER: ${DATABASE_USER}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      QUICKTELLER_CLIENTID: ${QUICKTELLER_CLIENTID}
+      QUICKTELLER_SECRET: ${QUICKTELLER_SECRET}
+      QUICKTELLER_TOKEN_URL: ${QUICKTELLER_TOKEN_URL}
+      QUICKTELLER_WHATSAPP_TOKEN_URL: ${QUICKTELLER_WHATSAPP_TOKEN_URL}
+      AWS_ACCESS_KEY: ${AWS_ACCESS_KEY}
+      AWS_ACCESS_SECRET: ${AWS_ACCESS_SECRET}
+
+    depends_on:
+      - db
+
+  db:
+    image: postgres:17-alpine
+    restart: always
+    environment:
+      POSTGRES_DB: mydb
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/create_script.sql:/docker-entrypoint-initdb.d/init.sql
+volumes:
+  postgres_data:
