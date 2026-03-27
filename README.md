@@ -1,6 +1,7 @@
 # 🚗 CarryGo
 
 > **Ride-Sharing Application** | Built for the Interswitch Innovation Competition
+> FIGMA LINK : https://www.figma.com/design/ErZog7XMPDtD3fZB0EoVjp/Team-Carry-GO?node-id=0-1&t=xj1UfdLkZOolJCjW-1
 
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white)
 ![React Native](https://img.shields.io/badge/React_Native-20232A?style=flat&logo=react&logoColor=61DAFB)
